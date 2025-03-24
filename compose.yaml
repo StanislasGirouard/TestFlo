@@ -1,0 +1,30 @@
+services:
+  db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: spring_td
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+
+  java:
+    depends_on:
+      - db
+    image: cpt:latest
+    ports:
+      - "8000:8080"
+    environment:
+      SPRING_APPLICATION_JSON: '{
+             "spring.datasource.url": "jdbc:mysql://db:3306/spring_td?serverTimezone=UTC&createDatabaseIfNotExist=true",
+             "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL8Dialect",
+             "spring.datasource.username": "root",
+             "spring.datasource.password": "root",
+             "spring.jpa.hibernate.ddl-auto" : "create"
+           }'
+    restart: no
+volumes:
+  mysql_data: { }
