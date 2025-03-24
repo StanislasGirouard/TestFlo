@@ -9,7 +9,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'maven'
+          distribution: 'temurin'
           java-package: '17'
       - name: run tests
         run: mvn clean test
